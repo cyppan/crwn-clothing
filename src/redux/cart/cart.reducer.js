@@ -15,18 +15,40 @@ const cartReducer = (state = INITIAL_STATE, action) => {
     case CartActionTypes.ADD_ITEM:
       const { id } = action.payload
       const existing = state.cartItems.find(item => item.id === id);
-      const newCartItems = [...state.cartItems];
       if (existing) {
-        existing.quantity += 1;
+        return {
+          ...state,
+          cartItems: state.cartItems.map(item =>
+            item.id === action.payload.id ?
+            { ...item, quantity: item.quantity + 1 }
+            : item
+          )
+        }
       } else {
-        newCartItems.push({
-          ...action.payload,
-          quantity: 1
-        });
+        return {
+          ...state,
+          cartItems: [...state.cartItems, {
+            ...action.payload,
+            quantity: 1
+          }]
+        }
       }
+    case CartActionTypes.CLEAR_ITEM_FROM_CART:
       return {
         ...state,
-        cartItems: newCartItems
+        cartItems: state.cartItems.filter(item => item.id !== action.payload.id)
+      }
+    case CartActionTypes.REMOVE_ITEM:
+      return {
+        ...state,
+        cartItems: state.cartItems.map(item =>
+          (item.id === action.payload.id) ?
+            {
+              ...item,
+              quantity: item.quantity - 1
+            } 
+            : item
+        ).filter(item => item.quantity > 0)
       }
     default:
       return state
