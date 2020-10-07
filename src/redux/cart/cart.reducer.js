@@ -15,7 +15,7 @@ const cartReducer = (state = INITIAL_STATE, action) => {
     case CartActionTypes.ADD_ITEM:
       const { id } = action.payload
       const existing = state.cartItems.find(item => item.id === id);
-      const newCartItems = state.cartItems;
+      const newCartItems = [...state.cartItems];
       if (existing) {
         existing.quantity += 1;
       } else {
