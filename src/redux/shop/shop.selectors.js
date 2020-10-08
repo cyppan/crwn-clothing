@@ -4,5 +4,11 @@ const selectShop = state => state.shop;
 
 export const selectShopCollections = createSelector(
   [selectShop],
-  shop => shop.collections
+  shop => Object.values(shop.collections)
 );
+
+export const selectCollection = collectionUrlParam => 
+  createSelector(
+    [selectShop],
+    shop => shop.collections[collectionUrlParam] 
+  )
