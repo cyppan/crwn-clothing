@@ -4,11 +4,11 @@ const selectShop = state => state.shop;
 
 export const selectShopCollections = createSelector(
   [selectShop],
-  shop => Object.values(shop.collections)
+  shop => shop.collections ? Array.from(shop.collections.values()) : []
 );
 
 export const selectCollection = collectionUrlParam => 
   createSelector(
     [selectShop],
-    shop => shop.collections[collectionUrlParam] 
+    shop => shop.collections && shop.collections.get(collectionUrlParam)
   )
